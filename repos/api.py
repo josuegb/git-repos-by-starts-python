@@ -4,6 +4,7 @@ from repos.models import GitHubRepo
 
 GITHUB_API_URL = "https://api.github.com/search/repositories"
 
+
 def create_query(languages, min_stars):
     query = f"stars:>{min_stars} "
 
@@ -23,8 +24,11 @@ def repos_with_most_stars(languages, min_stars=50000, sort="stars", order="desc"
 
     if status_code != 200:
         raise GitHubApiError(status_code)
-    
+
     response_json = response.json()
     items = response_json["items"]
-    git_repos = [GitHubRepo(item["language"], item["name"], item["stargazers_count"]) for item in items]
+    git_repos = [
+        GitHubRepo(item["language"], item["name"], item["stargazers_count"])
+        for item in items
+    ]
     return git_repos
